@@ -1,28 +1,36 @@
+'use strict'
+
 const fs = require('fs');
-const {convertArrayToCSV} = require('convert-array-to-csv');
+// const {convertArrayToCSV} = require('convert-array-to-csv');
+const _ = require('lodash')
 
 
 const randomFunctions = {
-    first: (lambda) => -1 / lambda * Math.log(Math.random()),
-    second: (sigma, a) => {
-        const mu = Array(11).map(() => Math.random()).reduce((acc, item) => acc + item, 0) - 6;
+    first: (randomValue, lambda) => -1 / lambda * Math.log(randomValue),
+    second: (randomValue, sigma, a) => {
+        const mu = _.sum(Array.from({length: 12}).map(() => randomValue)) - 6;
         return sigma * mu + a
     },
-    third: (a = 5 ** 13, c = 2 ** 31, i = 1) => {
-        const zFunc = () => {
-            if (i === 0) return 1;
-            return a * zFunc(i - 1) % c
+    third: (randomValue, a = 5 ** 13, c = 2 ** 31, i = 1) => {
+        const arr = [1, 1];
+        const zFunc = (iVal) => {
+            // if (iVal === 0) return 1;
+            if (arr[iVal]) return arr[iVal];
+
+            const val = a * zFunc(iVal - 1) % c;
+            arr[iVal] = val;
+            return val;
         }
 
-        const z = zFunc();
+        const z = zFunc(i);
         return z / c;
     }
 }
 
 const distributions = {
-    first: (x, lambda) => 1 - Math.E ** (-lambda * x),
-    second: (x, sigma, a) => (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-((x - a) ** 2 / (2 * sigma ** 2))),
-    third: (x, a, b) => {
+    exp: (x, lambda) => 1 - Math.E ** (-lambda * x),
+    normal: (x, sigma, a) => (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-((x - a) ** 2 / (2 * sigma ** 2))),
+    uniform: (x, a, b) => {
         if (x <= a) return 0
         if (x > b) return 1
 
@@ -30,18 +38,39 @@ const distributions = {
     }
 }
 
+const tools = {
+    average: (arr) => {
+        return _.sum(arr) / arr.length
+    },
+    dispersion: (arr) => {
+        const avg = tools.average(arr)
+
+        const sum = arr.reduce((acc, x) => {
+            const n = (x - avg) ** 2;
+            return acc + n;
+        }, 0)
+        return sum / (arr.length - 1);
+    },
+    chi: (arr, expectedArr) => {
+        let hi = 0;
+        for (let i = 0; i < arr.length; i++) {
+            hi += (arr[i] - expectedArr[i]) ** 2 / (expectedArr[i]);
+        }
+        return hi / arr.length;
+    }
+}
+
 const ITEMS_NUM = 10000;
-const nf = new Intl.NumberFormat('uk-UA');
 
-
-const lambda = 1;
-const firstArr = [...Array(ITEMS_NUM)].map(() => randomFunctions.first(lambda))
-const f = firstArr.map(x => distributions.first(x, 1))
-// console.log()
 
 // const csv = convertArrayToCSV(firstArr.map(x => [nf.format(x)]));
-const csv = convertArrayToCSV(f.map(x => [nf.format(x)]));
+// const csv = convertArrayToCSV(f.map(x => [nf.format(x)]));
+//
+// fs.writeFileSync('./data.csv', csv);
 
-fs.writeFileSync('./data.csv', csv);
-
-
+module.exports = {
+    randomFunctions,
+    distributions,
+    ITEMS_NUM,
+    tools
+}

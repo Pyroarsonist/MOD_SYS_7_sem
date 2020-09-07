@@ -6,3 +6,23 @@ convert-array-to-csv@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/convert-array-to-csv/-/convert-array-to-csv-2.0.0.tgz#3a7f4548a169a3efc5857d0da28c5cfb57a93173"
   integrity sha512-dxUINCt28k6WbXGMoB+AaKjGY0Y6GkKwZmT+kvD4nJgVCOKsnIQ3G6n0v2II1lG4NwXQk6EWZ+pPDub9wcqqMg==
+
+cumulative-distribution-function@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/cumulative-distribution-function/-/cumulative-distribution-function-1.0.3.tgz#b8f0b46e38ef634bb42ce078764aeb7d413abfb0"
+  integrity sha512-UjljLwdKGLzUOxM7Kw0/sQJtn2FCYrNF1GYmIX6mPcjYHT5drba5FcXWz6tO1WDbXLyT1CE7pXiu4z3VNQvN5w==
+
+lodash@^4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+
+nodeplotlib@^0.6.5:
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/nodeplotlib/-/nodeplotlib-0.6.5.tgz#fff10efa88a83b4b6dbb2356a2e51d2d523fedcd"
+  integrity sha512-P2mk3QRjXox0Hr1nhMJwjW7Cp8GgZGBM3xIN6ytNoU8W5RJaUs0qgzilSPZjHJpm1R77oRRS+uJmh+1q0PMwIQ==
+
+simple-statistics@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/simple-statistics/-/simple-statistics-7.2.0.tgz#f6912250340d1f71ed9bb74755115cb741edea09"
+  integrity sha512-lx8tPifqqXcOYw7yW8uO/c+2p3CCozhxLXebDi2iYH4cTGF3sbnBmVFZzIpb3w1B3bjHvEfewfy0q85MpRM1dg==
