@@ -39,6 +39,34 @@ const distributions = {
 }
 
 const tools = {
+    intervalLabels: (arr) => {
+        const INTERVALS_COUNT = 20;
+
+        const max = Math.max(...arr)
+        const min = Math.min(...arr)
+
+        const l = Math.abs(((max - min) / INTERVALS_COUNT))
+
+        return Array.from({length: INTERVALS_COUNT}).map((_, i) => min + i * l)
+    },
+    intervals: (arr) => {
+        const INTERVALS_COUNT = 20;
+
+        const max = Math.max(...arr)
+        const min = Math.min(...arr)
+
+
+        const l = Math.abs(((max - min) / INTERVALS_COUNT))
+
+
+        return Array.from({length: INTERVALS_COUNT}).map((_, i) => {
+
+            const left = min + i * l;
+            const right = left + l;
+
+            return arr.filter(x => x >= left && x < right).length
+        })
+    },
     average: (arr) => {
         return _.sum(arr) / arr.length
     },
