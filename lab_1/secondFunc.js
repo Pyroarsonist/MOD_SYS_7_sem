@@ -11,18 +11,29 @@ const constants = [{lambda: -1, sigma: 1}, {lambda: 1, sigma: 2}, {lambda: 2, si
 const defaultArrs = constants.map(c => [...Array(ITEMS_NUM)].map(() => randomFunctions.second(0.5, c.sigma, c.lambda)))
 const arrs = constants.map(c => [...Array(ITEMS_NUM)].map(() => randomFunctions.second(Math.random(), c.sigma, c.lambda)))
 
-const distributionsArrs = constants.map((c, i) => arrs[i].map(x => distributions.normal(x, c.sigma, c.lambda)))
-const data = constants.map((c, i) => ({x: arrs[i], y: distributionsArrs[i], type: 'histogram'}))
+const intervals = arrs.map(arr => tools.intervals(arr))
+const intervalLabels = arrs.map(arr => tools.intervalLabels(arr))
 
+const distributionsArrs = constants.map((c, i) => arrs[i].map(x => distributions.normal(x, c.sigma, c.lambda)))
+const data = constants.map((l, i) => [({x: intervalLabels[i], y: intervals[i], type: 'line'}), {
+    x: arrs[i],
+    y: distributionsArrs[i],
+    type: 'histogram'
+}]);
 data.forEach((d, i) => {
-    stack([d])
+    stack(d)
+
+    const degreeOfFreedom = d[0].x.length - 1
 
     console.log(`${i + 1} arr, lambda: ${constants[i].lambda}, sigma: ${constants[i].sigma}`)
-    console.log(`Average: ${tools.average(d.x)}`)
-    console.log(`Dispersion: ${tools.dispersion(d.x)}`)
-    console.log(`Chi squared test: ${tools.chi(d.x, defaultArrs[i])}`)
-    console.log(`Default chi: ${ss.chiSquaredDistributionTable["1"]["0.05"]}`)
+    console.log(`Average: ${tools.average(arrs[i])}`)
+    console.log(`Dispersion: ${tools.dispersion(arrs[i])}`)
+    const chi = tools.chi(arrs[i], defaultArrs[i])
+    console.log(`Chi squared test: ${chi}`)
+    console.log(`Degree of freedom: ${degreeOfFreedom}`)
+    const criteriaChi = ss.chiSquaredDistributionTable[degreeOfFreedom]["0.05"]
+    console.log(`Criteria chi: ${criteriaChi}`)
+    console.log(`Chi test passed: ${chi < criteriaChi}`)
     console.log('\n')
-
 })
 plot();
