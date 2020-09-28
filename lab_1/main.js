@@ -1,7 +1,6 @@
 'use strict'
 
 const fs = require('fs');
-// const {convertArrayToCSV} = require('convert-array-to-csv');
 const _ = require('lodash')
 
 
@@ -91,10 +90,6 @@ const tools = {
 const ITEMS_NUM = 10000;
 
 
-// const csv = convertArrayToCSV(firstArr.map(x => [nf.format(x)]));
-// const csv = convertArrayToCSV(f.map(x => [nf.format(x)]));
-//
-// fs.writeFileSync('./data.csv', csv);
 
 module.exports = {
     randomFunctions,

@@ -25,16 +25,16 @@ data.forEach((d, i) => {
 
     const degreeOfFreedom = d[0].x.length - 1
 
-    console.log(`${i + 1} arr, lambda: ${lambdas[i]}`)
-    console.log(`Average: ${tools.average(arrs[i])}`)
-    console.log(`Dispersion: ${tools.dispersion(arrs[i])}`)
+    console.info(`${i + 1} arr, lambda: ${lambdas[i]}`)
+    console.info(`Average: ${tools.average(arrs[i])}`)
+    console.info(`Dispersion: ${tools.dispersion(arrs[i])}`)
     const chi = tools.chi(arrs[i], defaultArrs[i])
-    console.log(`Chi squared test: ${chi}`)
-    console.log(`Degree of freedom: ${degreeOfFreedom}`)
+    console.info(`Chi squared test: ${chi}`)
+    console.info(`Degree of freedom: ${degreeOfFreedom}`)
     const criteriaChi = ss.chiSquaredDistributionTable[degreeOfFreedom]["0.05"]
-    console.log(`Criteria chi: ${criteriaChi}`)
-    console.log(`Chi test passed: ${chi < criteriaChi}`)
-    console.log('\n')
+    console.info(`Criteria chi: ${criteriaChi}`)
+    console.info(`Chi test passed: ${chi < criteriaChi}`)
+    console.info('\n')
 
 })
 plot();

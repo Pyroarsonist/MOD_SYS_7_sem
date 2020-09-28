@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "convert-array-to-csv": "^2.0.0",
-    "cumulative-distribution-function": "^1.0.3",
     "lodash": "^4.17.20",
     "nodeplotlib": "^0.6.5",
     "simple-statistics": "^7.2.0"
