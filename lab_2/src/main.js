@@ -22,7 +22,7 @@ const constants = [
 
       console.info('\nStarting consuming....');
       for (const j of jobs) {
-        await delay(j.delay * 50);
+        await delay(j.delay );
         consumer.emit(Consumer.consumeEvent, j);
       }
 

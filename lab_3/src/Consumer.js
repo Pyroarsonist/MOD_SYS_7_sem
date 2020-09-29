@@ -2,21 +2,34 @@ import _ from 'lodash';
 import Emitter from 'events';
 import moment from 'moment';
 import { avg, delay } from './tools';
+import { setIntervalAsync } from 'set-interval-async/fixed';
+import { clearIntervalAsync } from 'set-interval-async';
 
 class Consumer extends Emitter {
+  static get endConsumingEvent() {
+    return 'end';
+  }
+
   jobs = [];
   jobsDone = [];
   loaded = [];
   queueLength = [];
   id = null;
-  controller = null;
   maxQueueLength = 0;
+  output = null;
 
-  constructor(id, controller) {
+  constructor(props, id) {
     super();
 
-    this.id = id;
-    this.controller = controller;
+    this.MAX_DELAY_TIME = props.MAX_DELAY_TIME;
+    this.MAX_JOBS_COUNT = props.MAX_JOBS_COUNT;
+    this.MAX_TIME = props.MAX_TIME;
+    this.INTERVAL = props.INTERVAL;
+    this.CONSUMER_COUNT = props.CONSUMER_COUNT;
+    this.QUEUE_LIMIT = props.QUEUE_LIMIT;
+    this.id=id
+
+    this.averageLoadCalculatorInterval = setIntervalAsync(() => this.consume(), this.INTERVAL);
   }
 
   async consume() {
@@ -25,17 +38,34 @@ class Consumer extends Emitter {
 
     if (this.jobs.length) {
       const job = this.jobs[0];
-      console.info(`Job #${job.id} is processing on consumer #${this.id}`);
+      console.info(`${new Date().toISOString()} | Job #${job.id} is processing on consumer #${this.id}`);
       await delay(job.time);
       job.doneAt = new Date().toISOString();
-      console.info(`Job #${job.id} done for ${job.time}ms on consumer #${this.id}`);
-      this.jobsDone.push(job);
+      console.info(`${new Date().toISOString()} | Job #${job.id} done for ${job.time}ms  on consumer #${this.id}`);
       this.jobs.shift();
 
-      if (job.last) {
-        await this.controller.end();
+      const end = async () => {
+        this.jobsDone.push(job);
+        if (job.last) {
+          await this.end();
+        }
+      };
+
+      if (this.output) {
+        const next = _.sample(this.output);
+        if (next) {
+          await next.acceptJob(job);
+        } else {
+          await end();
+        }
+      } else {
+        await end();
       }
     }
+  }
+
+  setOutput(output) {
+    this.output = output;
   }
 
   canAcceptJob() {
@@ -46,7 +76,7 @@ class Consumer extends Emitter {
     job.addedToQueueAt = new Date().toISOString();
 
     this.jobs.push(job);
-    console.info(`Job #${job.id} put to queue on consumer #${this.id}`);
+    console.info(`${new Date().toISOString()} | Job #${job.id} put to queue  on consumer #${this.id}`);
 
     this.maxQueueLength = Math.max(this.maxQueueLength, this.jobs.length);
   }
@@ -61,6 +91,11 @@ class Consumer extends Emitter {
 
   get averageQueueLength() {
     return avg(this.queueLength);
+  }
+
+  async end() {
+    await clearIntervalAsync(this.averageLoadCalculatorInterval);
+    this.emit(Consumer.endConsumingEvent);
   }
 }
 

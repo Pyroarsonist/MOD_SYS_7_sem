@@ -41,8 +41,8 @@ class Consumer extends Emitter {
 
       const job = this.jobs[0];
       console.info(`Job #${job.id} is processing`);
+      job.addedToJobAt = new Date().toISOString();
       await delay(job.time);
-      job.doneAt = new Date().toISOString();
       console.info(`Job #${job.id} done for ${job.time}ms`);
       this.jobsDone.push(job);
       this.jobs.shift();
