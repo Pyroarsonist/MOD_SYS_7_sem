@@ -69,7 +69,7 @@ class Consumer extends Emitter {
   }
 
   get averageTimeWaited() {
-    return _.sum(this.jobsDone.map((j) => moment(j.doneAt).diff(moment(j.createdAt)))) / this.jobsDone.length;
+    return _.sum(this.jobsDone.map((j) => moment(j.addedToJobAt).diff(moment(j.createdAt)))) / this.jobsDone.length;
   }
 
   get averageLoad() {

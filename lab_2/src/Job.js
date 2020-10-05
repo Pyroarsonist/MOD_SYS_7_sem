@@ -2,7 +2,7 @@ import { avg } from './tools';
 
 class Job {
   addedToQueueAt = null;
-  doneAt = null;
+  addedToJobAt = null;
   createdAt = new Date().toISOString();
   last = false;
 
