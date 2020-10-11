@@ -1,0 +1,31 @@
+{
+  "scripts": {
+    "test": "nodemon --exec DEBUG=lab:* babel-node src/test.js",
+    "auto": "nodemon --exec DEBUG=lab:* babel-node src/auto.js",
+    "hospital": "nodemon --exec DEBUG=lab:* babel-node src/hospital.js",
+    "lint": "eslint \"src/**/*.js\" --fix"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/eslint-parser": "^7.11.5",
+    "@babel/eslint-plugin": "^7.11.5",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.5",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "debug": "^4.2.0",
+    "lodash": "^4.17.20",
+    "moment": "^2.28.0",
+    "set-interval-async": "^1.0.33",
+    "unirand": "^2.10.0"
+  }
+}
