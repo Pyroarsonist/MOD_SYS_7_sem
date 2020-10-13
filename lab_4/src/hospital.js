@@ -8,7 +8,7 @@ import moment from 'moment';
 
 const debug = debugHandler('lab:hospital');
 
-const constant = { MAX_JOBS_COUNT: 10, MAX_DELAY_TIME: 150, INTERVAL: 10 };
+const constant = { MAX_JOBS_COUNT: 30, MAX_DELAY_TIME: 150, INTERVAL: 10 };
 
 const TIME_MULTIPLIER = 10;
 
@@ -79,6 +79,7 @@ const jobTypes = [
       }) || jobTypes[0];
 
     j.type = next.type;
+    j.firstType = next.type;
   });
 
   debug('\nStarting consuming....');
@@ -97,11 +98,27 @@ const jobTypes = [
     MAX_JOBS_COUNT: consumer1.MAX_JOBS_COUNT,
     INTERVAL: consumer1.INTERVAL,
 
-    averageTimeInSystem: avg(
-      [consumer2, consumer4].map(
-        (c) => _.sum(c.jobsDone.map((j) => moment(j.doneAt).diff(moment(j.firstAddedToQueueAt)))) / c.jobsDone.length
-      )
-    ),
+    averageTimeInSystem1:
+      _.sum(
+        consumer2.jobsDone
+          .filter((j) => j.firstType === jobTypes[0].type)
+          .map((j) => moment(j.doneAt).diff(moment(j.firstAddedToQueueAt)))
+      ) / consumer2.jobsDone.filter((j) => j.firstType === jobTypes[0].type).length,
+
+    averageTimeInSystem2:
+      _.sum(
+        consumer2.jobsDone
+          .filter((j) => j.firstType === jobTypes[1].type)
+          .map((j) => moment(j.doneAt).diff(moment(j.firstAddedToQueueAt)))
+      ) / consumer2.jobsDone.filter((j) => j.firstType === jobTypes[1].type).length,
+
+    averageTimeInSystem3:
+      _.sum(
+        consumer4.jobsDone
+          .filter((j) => j.firstType === jobTypes[2].type)
+          .map((j) => moment(j.doneAt).diff(moment(j.firstAddedToQueueAt)))
+      ) / consumer4.jobsDone.filter((j) => j.firstType === jobTypes[2].type).length,
+
     averageAcceptedJobTime: consumer4.averageAcceptedJobTime,
   });
 })();
