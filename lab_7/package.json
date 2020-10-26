@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "start": "nodemon --exec DEBUG=lab:* babel-node src/main.js",
+    "lint": "eslint \"src/**/*.js\" --fix"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/eslint-parser": "^7.11.5",
+    "@babel/eslint-plugin": "^7.11.5",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.5",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2"
+  },
+  "dependencies": {
+    "debug": "^4.2.0",
+    "lodash": "^4.17.20"
+  }
+}
