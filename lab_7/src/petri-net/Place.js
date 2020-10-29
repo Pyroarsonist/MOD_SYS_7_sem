@@ -2,32 +2,45 @@ import _ from 'lodash';
 import Node from './Node';
 
 class Place extends Node {
-  tokens = 0;
+  tokensCount = 0;
+  type = 'place';
 
-  constructor(name) {
+  // optional metadata
+  metadata = { observableTokensCountArr: [] };
+
+  constructor(name, tokens = 0) {
     super(name);
+    this.tokens = tokens;
   }
 
-  // todo: dont use tokens var (weighted arcs)
-  consume(tokens = 1) {
-    if (this.tokens < tokens) {
-      return;
-    }
-
-    this.tokens -= tokens;
+  get tokens() {
+    return this.tokensCount;
   }
 
-  // todo: dont use tokens var (weighted arcs)
-  produce(tokens = 1) {
-    this.tokens += tokens;
+  set tokens(tokens) {
+    this.tokensCount = tokens;
+
+    this.saveStats(tokens);
+  }
+
+  saveStats(tokens) {
+    // saving optional metadata
+    this.metadata.observableTokensCountArr.push(tokens);
+  }
+
+  summarize() {
+    return {
+      avg: _.sum(this.metadata.observableTokensCountArr) / this.metadata.observableTokensCountArr.length,
+      max: _.max(this.metadata.observableTokensCountArr),
+      min: _.min(this.metadata.observableTokensCountArr),
+    };
   }
 
   toJSON() {
-    return _.extend(super.toJSON(), {
-      type: 'place',
+    return {
+      ...super.toJSON(),
       tokens: this.tokens,
-      transitions: _.map(this.outputs(), 'name'),
-    });
+    };
   }
 }
 
