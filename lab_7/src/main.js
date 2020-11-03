@@ -38,8 +38,3 @@ debug('Start simulation');
 net.simulate(1000, false, true);
 
 debug('End simulation');
-
-/*
-      p1 (start with 10 tokens)  ->  t1  ->  p2
-                                         ->  p3 -> p1
- */
