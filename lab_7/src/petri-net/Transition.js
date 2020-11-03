@@ -1,6 +1,4 @@
-import _ from 'lodash';
 import Node from './Node';
-import Arc from './Arc';
 
 class Transition extends Node {
   isFired = false;

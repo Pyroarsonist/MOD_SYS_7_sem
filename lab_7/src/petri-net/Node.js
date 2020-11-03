@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-import _ from 'lodash';
 
 class Node extends EventEmitter {
   inputArcs = [];
